@@ -7,14 +7,15 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use(morgan("dev"));
 app.use(cors());
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+  })
+);
 app.use(bodyParser.json());
 require("./config/database.js")(app);
+require("./routeHandler")(app);
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "Hope you complete this",
-  });
-});
 const port = process.env.PORT;
 
 app.listen(port, () => {
