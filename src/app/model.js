@@ -10,5 +10,25 @@ const ProductSchema = mongoose.Schema({
     required: [true, "Product price is required"],
   },
 });
+const UserSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Name is required"],
+  },
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+  },
+  token: {
+    type: String,
+  },
+});
 const Product = mongoose.model("Product", ProductSchema);
-module.exports = Product;
+const User = mongoose.model("User", UserSchema);
+
+module.exports = { Product, User };
