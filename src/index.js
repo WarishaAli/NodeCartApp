@@ -13,6 +13,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+app.use("/files", express.static("files"));
 require("./config/database.js")(app);
 require("./routeHandler")(app);
 
