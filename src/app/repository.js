@@ -27,7 +27,7 @@ exports.removeProduct = async (id) => {
 exports.register = async (payload) => {
   const { name, email, password } = payload;
   console.log("register params", payload);
-  const oldUser = await User.findOne({ email });
+  const oldUser = await User.findOne({ email: email });
   if (oldUser) {
     return {
       error: "User already exists",
@@ -39,9 +39,13 @@ exports.register = async (payload) => {
     email: email.toLowerCase(),
     password: encryptedPassword,
   });
-  const token = jwt.sign({ user_id: newUser._id, email }, process.env.JWT_KEY, {
-    expiresIn: "2h",
-  });
+  const token = jwt.sign(
+    { user_id: newUser._id.toString(), email },
+    process.env.JWT_KEY,
+    {
+      expiresIn: "2h",
+    }
+  );
   newUser.token = token;
   return newUser;
 };
@@ -49,13 +53,12 @@ exports.register = async (payload) => {
 exports.login = async (payload) => {
   const { email, password } = payload;
   const user = await User.findOne({ email });
-  console.log("user in login repository js before if", user);
 
   if (user && (await bcrypt.compare(password, user.password))) {
     console.log("user in login repository js", user);
     const token = jwt.sign(
       {
-        user_id: "152552662",
+        user_id: user._id,
         email,
       },
       process.env.JWT_KEY,

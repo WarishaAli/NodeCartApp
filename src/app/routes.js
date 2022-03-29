@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const productController = require("./controller");
+const auth = require("./middleware");
 
-router.post("/", productController.createProduct);
+router.post("/", auth, productController.createProduct);
 router.post("/login", productController.login);
 router.post("/register", productController.register);
 router.get("/", productController.getProducts);
